@@ -1,6 +1,0 @@
-
-# JPA #
-
----
-
-### Łukasz Burdyna ###
