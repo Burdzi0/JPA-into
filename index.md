@@ -22,8 +22,10 @@ data between Java objects / classes and a relational database
 ---
 
 # Just specification #
-JPA itself is just a specification, not a product. It cannot perform any actions itself.  
-JPA is just a set of interfaces and **requires an implementation**
+JPA itself is just a specification, not a product.  
+It cannot perform any actions itself.  
+JPA is just a set of interfaces and  
+**requires an implementation**
 
 ---
 
@@ -272,16 +274,16 @@ OneToMany, ManyToMany - JoinTable, Lazy
 ```java
 @Query("SELECT c FROM Client c 
 	WHERE c.status = :status and c.name = :name")
-User findClientByStatusAndName(
+Client findClientByStatusAndName(
   @Param("status") Integer status, 
   @Param("name") String name);
 ```
 is equal to
 
 ```java
-@Query("SELECT u FROM User u 
-	WHERE u.status = ?1 and u.name = ?2")
-User findUserByStatusAndName(Integer status, String name);
+@Query("SELECT c FROM User c 
+	WHERE c.status = ?1 and c.name = ?2")
+Client findClientByStatusAndName(Integer status, String name);
 ```
 
 ---
