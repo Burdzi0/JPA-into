@@ -139,6 +139,8 @@ public class Author {
 	private String lastName;
 ```
 
+Note: EnumType.ORDINAL
+
 ---
 
 ## Field vs getter
@@ -185,12 +187,13 @@ Note: Refresh - refresh the state of the instance from the database, overwriting
 ```java
 var transaction = entityManager.getTransaction();
 transaction.begin();
+// do important things here...
 transaction.commit();
 transaction.rollback();
 ```
 Spring
 ```java
-@Transactional
+@Transactional(rollbackFor = SomethingWentWrongException.class)
 ```
 
 ---
@@ -200,7 +203,7 @@ Spring
 * Managed
 * Detached
 
-> image from the other presentation
+![Managed vs detached](entity.png)
 
 Note: insert sth cos it's important
 
@@ -209,9 +212,11 @@ Note: insert sth cos it's important
 ## Spring repositories ##
 
 Interfaces to use with Spring Data:
-* DontRemember
-* PagedDontRemeber
+* CrudRepository
+* PagingAndSortingRepository
 * JpaRepository
+
+Note: JpaRepository provides some JPA-related methods such as flushing the persistence context and deleting records in a batch.
 
 ---
 
@@ -239,6 +244,9 @@ Joined - Superclass is mapped to a table, other entities have coresponding table
 @ManyToMany
 ```
 
+Note: OneToOne, ManyToOne - JoinColumn, Eager  
+OneToMany, ManyToMany - JoinTable, Lazy
+
 ---
 
 ## Cascade ##
@@ -253,27 +261,29 @@ Joined - Superclass is mapped to a table, other entities have coresponding table
 
 
 ## Fetch type ##
-```java
-fetch = FetchType.EAGER
-fetch = FetchType.LAZY
-```
 
----
-
-```java
-@JoinColumn
-```
-
----
-
-## Queries ##
-JPQL
+* EAGER
+* LAZY
 
 ---
 
 ## Queries ##
 
-* Spring Repository interface
-* TypedQuery
-* NamedQuery
+```java
+@Query("SELECT c FROM Client c 
+	WHERE c.status = :status and c.name = :name")
+User findClientByStatusAndName(
+  @Param("status") Integer status, 
+  @Param("name") String name);
+```
+is equal to
 
+```java
+@Query("SELECT u FROM User u 
+	WHERE u.status = ?1 and u.name = ?2")
+User findUserByStatusAndName(Integer status, String name);
+```
+
+---
+
+Thanks
